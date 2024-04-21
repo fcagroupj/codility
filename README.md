@@ -15,4 +15,5 @@ Ladder
 
 # Lesson 14 Binary search algorithm
 MinMaxDivision
+
 l14_NailingPlanks.py
