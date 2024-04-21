@@ -14,6 +14,6 @@ FibFrog
 Ladder
 
 # Lesson 14 Binary search algorithm
-MinMaxDivision
+l14_MinMaxDivision
 
 l14_NailingPlanks.py
