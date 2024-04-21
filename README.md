@@ -13,3 +13,5 @@ FibFrog
 
 Ladder
 
+# Lesson 14 Binary search algorithm
+MinMaxDivision
