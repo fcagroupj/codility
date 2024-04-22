@@ -1,7 +1,7 @@
 '''
 https://app.codility.com/demo/results/trainingGVX5J7-BJ2/
 [46% passed]
-In this problem we consider unsigned 30-bit integers, i.e. all integers B such that 0 ≤ B < 230.
+In this problem we consider unsigned 30-bit integers, i.e. all integers B such that 0 ≤ B < 2**30.
 
 We say that integer A conforms to integer B if, in all positions where B has bits set to 1, A has corresponding bits set to 1.
 
@@ -10,6 +10,10 @@ Write a function with python:
 def solution(A, B, C)
 
 that, given three unsigned 30-bit integers A, B and C, returns the number of unsigned 30-bit integers conforming to at least one of the given integers.
+
+Write an efficient algorithm for the following assumptions:
+
+A, B and C are integers within the range [0..1,073,741,823].
 '''
 numbers = []
     inp = [A, B, C]
