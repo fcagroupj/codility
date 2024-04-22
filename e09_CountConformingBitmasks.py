@@ -1,6 +1,6 @@
 '''
 https://app.codility.com/demo/results/trainingGVX5J7-BJ2/
-[46% passed]
+[100% passed]
 In this problem we consider unsigned 30-bit integers, i.e. all integers B such that 0 ≤ B < 2**30.
 
 We say that integer A conforms to integer B if, in all positions where B has bits set to 1, A has corresponding bits set to 1.
@@ -15,33 +15,16 @@ Write an efficient algorithm for the following assumptions:
 
 A, B and C are integers within the range [0..1,073,741,823].
 '''
-numbers = []
-    inp = [A, B, C]
+def supers(number):
+    N = 30
+    zeros = sum(1 for bit in range(N) if (number >> bit) & 1 == 0)
+    return 2**zeros
+
+
+def solution(a, b, c):
     
-    for x in inp:
-        numbers.append(x)
-        b_A = bin(x)[2:]
-        bits = []
-        for i, a in enumerate(b_A):
-            if(a == '0'):
-                bits.append(i)
-    
-        #print(1, bits, b_A)
-        n_bits = len(bits)
-        if(n_bits > 0):
-            for k in range(1, 2**n_bits):
-                k_b = bin(k)[2:]
-                if(len(k_b) < n_bits): 
-                    k_b = '0'*(n_bits-len(k_b)) + k_b
-                #print(2, k, k_b)
-                s = ''
-                for i in range(n_bits):
-                    if(i == 0):
-                        s += b_A[:bits[i]] + k_b[i]
-                    else:
-                        s += b_A[bits[i-1]+1:bits[i]] + k_b[i]
-                s += b_A[bits[-1]+1 :]
-                numbers.append(int(s, 2))
-                #print(3, k, k_b, s)
-    #print( sorted(numbers) )    
-    return len(list(set(numbers)))
+    total = supers(a) + supers(b) + supers(c)
+    total -= supers(a | b)         # counted twice, remove one
+    total -= supers(b | c)         # counted twice, remove one
+    total -= supers(a | c)         # counted twice, remove one
+    total += supers(a | b | c)     # counted three times, removed three times, add one
