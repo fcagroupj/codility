@@ -103,3 +103,38 @@ def solution(A):
     #print(3, p, q)
 
     return -1
+'''
+Here is another unfinished code from chatGPT
+'''
+def cross_product(p1, p2, p3):
+    """
+    Calculate the cross product of vectors (p2 - p1) and (p3 - p1).
+    Returns:
+        -1 if the cross product is counter-clockwise (CCW)
+         1 if the cross product is clockwise (CW)
+         0 if the points are collinear
+    """
+    value = (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y)
+    if value > 0:
+        return -1
+    elif value < 0:
+        return 1
+    else:
+        return 0
+
+def solution(A):
+    n = len(A)
+    for i in range(n):
+        p1 = A[i]
+        p2 = A[(i + 1) % n]
+        p3 = A[(i + 2) % n]
+        cp = cross_product(p1, p2, p3)
+        if cp != 0:
+            for j in range(3, n - 1):
+                p1 = A[(i + j - 1) % n]
+                p2 = A[(i + j) % n]
+                p3 = A[(i + j + 1) % n]
+                if cross_product(p1, p2, p3) != cp:
+                    return i + 1
+            return -1
+    return -1
