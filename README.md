@@ -17,3 +17,6 @@ Ladder
 l14_MinMaxDivision
 
 l14_NailingPlanks.py
+
+# Exercise 03
+(SocksLaundering.py)[https://app.codility.com/demo/results/training5VW4H5-3P7/]
