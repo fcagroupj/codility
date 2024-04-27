@@ -12,6 +12,7 @@ def solution(A)
 that, given a non-empty array A consisting of N integers, returns the maximum depth of water.
 
 '''
+# only keep relative hightest and lowest points, ignore the middle blocks
 def getBlocks(A):
     blocks = []
     blocks.append([A[0], 0])
@@ -43,12 +44,13 @@ def getDepth(blocks, max_depth):
             floors.append(blocks[l][0])
             l += 1
             
-        # found a lake
+        # the left must be reverted and used as the previous
         if(l >= len(blocks)):
             for j in range(0, l-i):
                 left_blocks.append(blocks[l-1-j])
             #print(4, left_blocks)
             break
+        # found a lake
         if(len(floors) > 0):
             min_floor = min(floors)
             max_depth = max(max_depth, blocks[i][0]-min_floor)
@@ -58,8 +60,7 @@ def getDepth(blocks, max_depth):
     return max_depth, left_blocks
 def solution(A):
     # Implement your solution here
-    blocks = []
-    
+        
     max_depth = 0
     
     N = len(A)
