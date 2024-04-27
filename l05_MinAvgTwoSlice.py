@@ -1,5 +1,5 @@
 '''
-https://app.codility.com/demo/results/trainingZU6HMM-RB5/
+https://app.codility.com/demo/results/training838FSJ-NY3/
 A non-empty array A consisting of N integers is given. A pair of integers (P, Q), such that 0 ≤ P < Q < N, is called a slice of array A (notice that the slice contains at least two elements). The average of a slice (P, Q) is the sum of A[P] + A[P + 1] + ... + A[Q] divided by the length of the slice. To be precise, the average equals (A[P] + A[P + 1] + ... + A[Q]) / (Q − P + 1).
 
 For example, array A such that:
@@ -24,6 +24,24 @@ def solution(A)
 
 that, given a non-empty array A consisting of N integers, returns the starting position of the slice with the minimal average. If there is more than one slice with a minimal average, you should return the smallest starting position of such a slice.
 '''
+def solution(A):
+    # Implement your solution here, it works when only consider 2 or 3 numbers
+    N = len(A)
+    i = 0
+    min_avg = float('inf')
+    start = 0
+    while(i+2 < N):
+        avg = min( (A[i] + A[i+1])/2.0, (A[i] + A[i+1] + A[i+2])/3.0 )
+        if(avg < min_avg):
+            start = i
+            min_avg = avg
+        i += 1
+    avg = (A[-2] + A[-1]) / 2.0
+    if(avg < min_avg):
+            start = N - 2
+    return start
+
+# AS a reference, this silly solution works by 50% at https://app.codility.com/demo/results/trainingZU6HMM-RB5/
 def solution(A):
     # Implement your solution here
     N = len(A)
