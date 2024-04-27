@@ -5,7 +5,7 @@ Halfling Woolly Proudhoof is an eminent sheep herder. He wants to build a pen (e
 
 Woolly is interested in the number of different ways in which he can build a pen. Pens are considered different if the sets of lengths of their sides are different. For example, a pen of size 1×4 is different from a pen of size 2×2 (although both have an area of 4), but pens of sizes 1×2 and 2×1 are considered the same.
 
-Write a function:
+Write a function with python:
 
 def solution(A, X)
 
