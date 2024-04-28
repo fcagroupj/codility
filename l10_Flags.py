@@ -1,5 +1,5 @@
 '''
-https://app.codility.com/demo/results/training4KVYGD-XWQ/
+https://app.codility.com/demo/results/training7G65CR-BTJ/
 A non-empty array A consisting of N integers is given.
 
 A peak is an array element which is larger than its neighbours. More precisely, it is an index P such that 0 < P < N − 1 and A[P − 1] < A[P] > A[P + 1].
@@ -52,6 +52,8 @@ def solution(A):
     # print(1, peaks)
     i = 2
     while(i*i < N):
+        i+=1
+    while(i >= 2):
         # flags = i, distance = i
         f_set = []
         peak = 0
@@ -63,11 +65,12 @@ def solution(A):
             else:
                 if(peaks[peak] > 0 and peak >= f_set[-1]+i):
                     f_set.append(peak)
+                    if(len(f_set) >= i):  return i
                     
             peak += 1
             # print(2, i, peak, f_set)
         # print(3, i, peak, f_set)
         if(len(f_set) >= i):  
-            max_flags = max(max_flags, i)   
-        i += 1
+            return i  
+        i -= 1
     return max_flags
