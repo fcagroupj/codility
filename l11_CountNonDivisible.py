@@ -1,5 +1,5 @@
 '''
-https://app.codility.com/demo/results/trainingS4AUGY-AGH/
+https://app.codility.com/demo/results/training3W2PPD-553/
 You are given an array A consisting of N integers.
 
 For each number A[i] such that 0 ≤ i < N, we want to count the number of elements of the array that are not the divisors of A[i]. We say that these elements are non-divisors.
@@ -31,6 +31,31 @@ Result array should be returned as an array of integers.
 # only process unique numbers saved in B
 # sort B, then the divisors are only in front of the targeting number
 def solution(A):
+    # Implement your solution here
+    N = len(A)
+    ans = [N] * N
+    counter = {}
+    mapper = {}
+    
+    for i in A:
+        if(i in counter): counter[i] += 1
+        else: counter[i] = 1   
+    for i in range(N):
+        if A[i] in mapper:
+            ans[i] = mapper[A[i]]
+            continue   
+        j, m = 1, A[i]
+        while j * j <= m:
+            if m % j == 0:
+                if j in counter:
+                    ans[i] -= counter[j]
+                if j * j < m and m // j in counter:
+                    ans[i] -= counter[m // j]
+            j += 1      
+        mapper[A[i]] = ans[i]
+    return ans
+
+def solution3(A):
     # Implement your solution here
     N = len(A)
     m = {}
