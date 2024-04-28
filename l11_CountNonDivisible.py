@@ -28,6 +28,8 @@ Result array should be returned as an array of integers.
 
 
 '''
+# only process unique numbers saved in B
+# sort B, then the divisors are only in front of the targeting number
 def solution(A):
     # Implement your solution here
     N = len(A)
@@ -44,7 +46,7 @@ def solution(A):
     for i in range(1, len(B)):
         yes_div = 0
         for j in range(i):
-            # can be divided
+            # can be divided, only in front of current number
             if(B[i] % B[j] == 0):  yes_div += m[B[j]]
         no_div = N - yes_div - m[B[i]]
         l_no_div[B[i]] = no_div
