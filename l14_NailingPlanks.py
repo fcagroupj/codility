@@ -32,3 +32,25 @@ def solution(A, B, C):
         if(sum(nailed) >= N): return j+1
     
     return -1
+################
+# As a reference at 50% passed too
+
+def solution(A, B, C):
+    # Implement your solution here
+    N = len(C)  
+    C_valid = {}
+    for c in C:
+        for i in range(len(A)):
+            if(A[i] <= c and c<=B[i]):
+                if(c in C_valid):  C_valid[c].append(i)
+                else: C_valid[c] = [i]
+    #print(1, C_valid)
+    
+    nails = []
+    
+    for i in range(N):
+        if(C[i] in C_valid): 
+            nails += C_valid[C[i]]
+            if(len(set(nails)) == len(A)): return i+1
+        
+    return -1
