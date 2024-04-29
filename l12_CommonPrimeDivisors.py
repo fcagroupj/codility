@@ -47,3 +47,48 @@ def solution(A, B):
         if has_same_prime_divisors(A[i], B[i]):
             count += 1
     return count
+#####################################
+# The below has 61%
+def isPrime(n):
+    ret = True
+    if(n <= 1): return False
+    i = 2
+    while(i * i <= n):
+        if(n % i == 0): return False
+        i += 1
+    return ret
+def getPrimes(n, upper):
+    
+    l_prime = []
+    i = 1
+    while(i * i < n ):
+        if(n % i == 0): 
+            if(isPrime(i)): l_prime.append(i)
+            if(isPrime(n // i)): l_prime.append( n // i)
+        i += 1
+    if(i * i == n ):
+        if(isPrime(i)): l_prime.append(i)
+    return l_prime
+
+def gcd1(a, b):
+    if(a % b == 0): return b
+    return gcd1(b, a%b)
+
+def solution(A, B):
+    # Implement your solution here
+    total = 0
+    for i in range(len(A)):
+        # g = gcd1(A[i], B[i])
+        #print(1, A[i], B[i], 0)
+        l_a = getPrimes(A[i], 0)
+        l_b = getPrimes(B[i], 0)
+        #print(2, l_a, l_b)
+        ret = True
+        if(len(l_a) == len(l_b)):
+            for j in range(len(l_a)):
+                if(l_a[j] != l_b[j]): 
+                    ret = False
+                    break
+        else: ret = False
+        if(ret): total += 1
+    return total
