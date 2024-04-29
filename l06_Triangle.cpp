@@ -24,7 +24,7 @@ int solution(vector<int> &A) {
     int N = A.size();
     
     for(int i=0; i<N-2; i++){
-        if(A[i] > 0 && A[i] + A[i+1] > A[i+2]) return 1;
+        if(A[i] > 0 && A[i] > A[i+2] - A[i+1]) return 1;
     }
     return 0;
 }
