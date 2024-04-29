@@ -35,3 +35,5 @@ def solution(A, B):
         res.append(fabs[A[i] + 1] % (pow(2, B[i])))
 
     return res
+###########
+# as a reference
