@@ -1,4 +1,31 @@
 /*
+https://app.codility.com/demo/results/training2CXZTV-WBA/
+[100%]
+*/
+int solution(vector<int> &A) {
+    // Implement your solution here
+    int len = A.size();
+    //assert(len>2);
+    vector<int> maxFromLeft(len,0), maxFromRight(len,0);
+    maxFromLeft[0] = maxFromRight[0] = 0;
+    maxFromLeft[len - 1] = maxFromRight[len - 1] = 0;
+    for (int i = 1; i < len; ++i){
+	    maxFromLeft[i] = std::max(maxFromLeft[i - 1] + A[i], 0);
+        //cout << maxFromLeft[i] << ", ";
+    }
+    //cout << endl;
+    for (int i = len-2; i >= 0; --i){
+	    maxFromRight[i] = std::max(maxFromRight[i + 1] + A[i], 0);
+        //cout << maxFromRight[i] << ", ";
+    }
+    //cout << endl;
+    int max = 0;
+    for (int i = 1; i < len - 1; ++i)
+	    max = std::max(max, maxFromLeft[i - 1] + maxFromRight[i + 1]);
+    return max;
+}
+
+/*
 https://app.codility.com/demo/results/trainingGKC3C2-NUA/
 [61%]
 A non-empty array A consisting of N integers is given.
