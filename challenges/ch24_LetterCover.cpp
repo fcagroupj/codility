@@ -1,9 +1,8 @@
 /*
-https://app.codility.com/cert/view/certSDZAR2-X2XU4KGSUETBWZ3Q/details/
 
+https://app.codility.com/cert/view/cert24XRG5-PVQKJXEF43NWRMJY/details/
 */
 
-/////
 #include <map>
 #include <vector>
 // you can write to stdout for debugging purposes, e.g.
@@ -31,20 +30,20 @@ vector<char> getLettersUnique(string S){
 int solution(string &P, string &Q) {
     // Implement your solution here
     int N = P.size();
-    vector<char> ul = getLettersUnique(P + Q)
+    /*
+    vector<char> ul = getLettersUnique(P + Q);
     
     vector<vector<int>> m_letters;
 
     for(auto u : ul){
-        vector<int> position[N, 0];
+        vector<int> position(N, 0);
         for(int i=1; i<N; i++){
             if(u == P[i]) position[i] += 1;
             if(u == Q[i]) position[i] += 1;
         }
         m_letters.push_back(position);
     }
-    
-
+    */
     /////////////////
     vector<string> v_S;
     std::string s1(1, P[0]);
