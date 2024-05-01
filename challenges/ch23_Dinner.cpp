@@ -1,4 +1,28 @@
 /*
+https://app.codility.com/demo/results/trainingWPG53G-325/
+[100%]
+*/
+int solution(vector<int> &A, vector<int> &B) {
+    // Implement your solution here
+    int N = A.size();
+    vector<int> rotCons(N, 0);
+    for(int i=0; i<N; i++){
+        
+        for(int j=0; j<N; j++){
+            if(A[i] == B[j]){
+                int rot = (i - j + N) % N;
+                rotCons[rot] ++;
+            }
+        }
+    }
+    for(int i=0; i<N; i++){
+        if(rotCons[i] <= 0) return i;
+    }
+    
+    return -1;
+}
+
+/*
 https://app.codility.com/demo/results/trainingB988DB-XHG/
 
 
