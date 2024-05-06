@@ -7,7 +7,7 @@ vector<int> getFab(int N){
     fabs[1] = 1;
     for(int i=2; i<N+2; i++){
         fabs[i] = fabs[i-1] + fabs[i-2];
-        if(fabs[i] > N+1) break;
+        if(fabs[i] > N+1) break;  // if passing max jumps
     }
     // 0, 1, 1, 2, 3, 5, ...
     return fabs;
@@ -39,7 +39,7 @@ int solution(vector<int> &A) {
                 //     dp[j] << ", " <<
                 //     endl;
             }
-            if(prev < 0) break;
+            if(prev < 0) break; // fs[] is bigger and bigger
         }
     }
     if(dp[N+1] == N + N) return -1;
