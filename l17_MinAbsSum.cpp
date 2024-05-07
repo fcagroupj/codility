@@ -23,3 +23,45 @@ int solution(vector<int> &A) {
     }
     return dp[N-1];
 }
+///////////////////////////////////////////////////////
+// it is from Python codes, but it doesn't work
+//
+//
+int solution(vector<int> &A) {
+    // Implement your solution here
+    int sm = 0;
+    int mx = 0;
+    for(auto a : A){
+        sm += abs(a);
+        mx = max(mx, abs(a));
+    }
+    vector<int> counts(mx+1, 0);
+    for(auto a : A){
+        counts[a] += 1;
+    }
+    vector<int> Total(sm+1, -1);
+    Total[0] = 0;
+    for(int i=1; i<mx+1; i++){
+        for(int j=0; j<sm+1; j++){
+            if(Total[j] >= 0){
+                Total[j] = counts[i];
+            }else if(j-i >= 0 && Total[j-i] > 0){
+                Total[j] = Total[j-i] - 1;
+            }
+            /*
+            cout << "2: ";
+            for(auto t : Total){
+                cout << t << ", ";
+            }
+            cout << endl;
+            */
+        }
+    }
+    int result = sm;
+    for(int i=0; i < int((sm+1)/2) + 1; i++){
+        if(Total[i] >= 0 && result > abs(sm - 2*i))
+        result = abs(sm - 2*i);
+    }
+
+    return result;
+}
