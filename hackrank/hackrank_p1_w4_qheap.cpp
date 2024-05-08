@@ -1,3 +1,14 @@
+/*
+This question is designed to help you get a better understanding of basic heap operations.
+
+There are  types of query:
+
+"1 v" - Add an element  to the heap.
+"2 v" - Delete the element  from the heap.
+"3" - Print the minimum of all the elements in the heap.
+NOTE: It is guaranteed that the element to be deleted will be there in the heap. Also, at any instant, only distinct elements will be in the heap.
+*/
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
