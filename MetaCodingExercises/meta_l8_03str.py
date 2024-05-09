@@ -16,7 +16,7 @@ Substring "dcbef" can be rearranged to "cfdeb", "cefdb", and so on. String t is 
 '''
 import math
 # Add any extra import statements you may need here
-
+from itertools import permutations
 
 # Add any helper functions you may need here
 def getPositions(S):
@@ -55,19 +55,19 @@ def min_length_substring(s, t):
         for a_perm in t_perms_total:
           a_perm += s_positions[let_t]
     else: # there are many possibilities
-      t_perms = permutations(s_positions[let_t], n_t)
+      t_perms = list( permutations(s_positions[let_t], n_t) )
       for i in range(len(t_perms)) :
         if(i == 0): continue # will be added later
         n_perms = len(t_perms_total)
         for j in range(n_perms):  # expand the list so the length will be len(t_perms) times
-          t_perms_total.append(t_perms_total[j] + t_perms[i])
+          t_perms_total.append(t_perms_total[j] + list(t_perms[i]) )
       # add or append the first one
       if(len(t_perms) > 0 ):
         if(len(t_perms_total) < 1):
-          t_perms_total.append(t_perms[0])
+          t_perms_total.append( list(t_perms[0]) )
         else:
           for a_perm in t_perms_total:
-            a_perm += t_perms[0]
+            a_perm += list(t_perms[0]) 
     #print(let_t, n_t, n_s, t_perms_total)      
   # get minimum substing from t_perms_total
   min_len = float('inf')
@@ -127,4 +127,10 @@ if __name__ == "__main__":
   check(expected_2, output_2)
 
   # Add your own test cases here
+  s1 = "dcbefebcedd"
+  t1 = "fdd"
+  expected_1 = 10
+  output_1 = min_length_substring(s1, t1)
+  check(expected_1, output_1)
+
   
