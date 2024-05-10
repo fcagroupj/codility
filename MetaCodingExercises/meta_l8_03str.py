@@ -14,6 +14,46 @@ output = 5
 Explanation:
 Substring "dcbef" can be rearranged to "cfdeb", "cefdb", and so on. String t is a substring of "cfdeb". Thus, the minimum length required is 5.
 '''
+'''
+We first count the occurrences of characters in string t and store them in a dictionary t_count.
+We use a sliding window approach to iterate over string s.
+At each step, we update the count of characters in the window and try to minimize the window by moving the start pointer.
+Finally, we return the minimum length found. If no valid substring is found, we return -1.
+'''
+def minLengthSubstring(s, t):
+    # Count the occurrences of characters in string t
+    t_count = {}
+    for char in t:
+        t_count[char] = t_count.get(char, 0) + 1
+    
+    # Initialize variables for the sliding window
+    min_length = float('inf')
+    start = 0
+    missing = len(t)
+    
+    # Iterate over the string s using a sliding window
+    for end in range(len(s)):
+        # Update the count of the current character
+        if s[end] in t_count:
+            t_count[s[end]] -= 1
+            if t_count[s[end]] >= 0:
+                missing -= 1
+        
+        # If all characters of t are found in the window, try to minimize the window
+        while missing == 0:
+            min_length = min(min_length, end - start + 1)
+            if s[start] in t_count:
+                t_count[s[start]] += 1
+                if t_count[s[start]] > 0:
+                    missing += 1
+            start += 1
+    
+    # If no valid substring found, return -1
+    if min_length == float('inf'):
+        return -1
+    return min_length
+'''
+'''
 import math
 # Add any extra import statements you may need here
 from itertools import permutations
