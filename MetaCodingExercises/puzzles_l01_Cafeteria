@@ -1,0 +1,61 @@
+'''
+https://www.metacareers.com/profile/coding_puzzles?puzzle=203188678289677
+A cafeteria table consists of a row of 
+�
+N seats, numbered from 
+1
+1 to 
+�
+N from left to right. Social distancing guidelines require that every diner be seated such that 
+�
+K seats to their left and 
+�
+K seats to their right (or all the remaining seats to that side if there are fewer than 
+�
+K) remain empty.
+There are currently 
+�
+M diners seated at the table, the 
+�
+ith of whom is in seat 
+�
+�
+S 
+i
+​
+ . No two diners are sitting in the same seat, and the social distancing guidelines are satisfied.
+Determine the maximum number of additional diners who can potentially sit at the table without social distancing guidelines being violated for any new or existing diners, assuming that the existing diners cannot move and that the additional diners will cooperate to maximize how many of them can sit down.
+Please take care to write a solution which runs within the time limit.
+
+'''
+from typing import List
+# Write any import statements here
+
+def getMaxAdditionalDinersCount(N: int, K: int, M: int, S: List[int]) -> int:
+  # Write your code here
+  # using sliding window
+  #   sort the current dinners, get used left seat and right seat
+  
+  S.sort()
+  stack_seats = []
+  #   from the left seat t seat 1, slide the window of K until all seats are used, put the available into a stack
+  for i in range(S[0]-1, 0, -1):
+    if(len(stack_seats) > 0):
+      if(stack_seats[-1] - i - 1 >= K): stack_seats.append(i)
+    else:
+      if(S[0] - i - 1 >= K): stack_seats.append(i)
+  stack_seats.append(S[0])
+  # print(1, stack_seats)
+  #   from the 1st used seat, get the availalbe seat and put into the stack and so on. 
+  
+  for j in range(S[0]+1, N+1, 1):
+    #   When found the seat is ocupied, check the last seat in the stack, remaining or removing it
+    if(j in S):
+      if(j - stack_seats[-1] - 1 < K):
+        stack_seats.pop()
+      stack_seats.append(j)
+    else:
+      if(j - stack_seats[-1] - 1 >= K): stack_seats.append(j)
+    # print(2, stack_seats)
+  # all dinner are seated. the addition dinners equals the total minus M diners
+  return (len(stack_seats) - M)
