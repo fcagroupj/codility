@@ -1,0 +1,37 @@
+'''
+A photography set consists of N cells in a row, numbered from 1 to N in order, and can be represented by a string C of length 
+N. Each cell i is one of the following types (indicated by , the ith character of C):
+If Ci= “P”, it is allowed to contain a photographer
+If Ci= “A”, it is allowed to contain an actor
+If Ci = “B”, it is allowed to contain a backdrop
+If Ci = “.”, it must be left empty
+A photograph consists of a photographer, an actor, and a backdrop, such that each of them is placed in a valid cell, and such that the actor is between the photographer and the backdrop. Such a photograph is considered artistic if the distance between the photographer and the actor is between X and Y cells (inclusive), and the distance between the actor and the backdrop is also between X and Y cells (inclusive). The distance between cells i and j is ∣i−j∣ (the absolute value of the difference between their indices).
+Determine the number of different artistic photographs which could potentially be taken at the set. Two photographs are considered different if they involve a different photographer cell, actor cell, and/or backdrop cell.
+'''
+# Write any import statements here
+def isArtistic(i, pos, j, X, Y):
+  dist1 = abs(i - pos)
+  dist2 = abs(j - pos)
+  if(dist1 >= X and dist1 <= Y):
+    if(dist2 >= X and dist2 <= Y):
+      return True
+  return False
+def getArtisticPhotographCount(N: int, C: str, X: int, Y: int) -> int:
+  # Write your code here
+  pos_P = []
+  pos_A = []
+  pos_B = []
+  for i, c in enumerate(C):
+    if(c == 'P'): pos_P.append(i)
+    elif(c == 'A'): pos_A.append(i)
+    elif(c == 'B'): pos_B.append(i)
+    
+  total_artistic = 0
+  for p in pos_P:
+    for a in pos_A:
+      for b in pos_B:
+        if( (p < a and a < b) or (p > a and a > b) ):
+          if(isArtistic(p, a, b, X, Y)):
+            total_artistic += 1
+          
+  return total_artistic
