@@ -1,0 +1,111 @@
+'''
+You've found yourself in a grid of cells with R rows and C columns. The cell in the ith row from the top and jth column from the left contains one of the following (indicated by the character G(i,j):
+If G(i,j)= ".", the cell is empty.
+If G(i,j)= "S", the cell contains your starting position. There is exactly one such cell.
+If G(i,j)= "E", the cell contains an exit. There is at least one such cell.
+If G(i,j)= "#", the cell contains a wall.
+Otherwise, if G(i,j) is a lowercase letter (between "a" and "z", inclusive), the cell contains a portal marked with that letter.
+Your objective is to reach any exit from your starting position as quickly as possible. Each second, you may take either of the following actions:
+Walk to a cell adjacent to your current one (directly above, below, to the left, or to the right), as long as you remain within the grid and that cell does not contain a wall.
+If your current cell contains a portal, teleport to any other cell in the grid containing a portal marked with the same letter as your current cell's portal.
+Determine the minimum number of seconds required to reach any exit, if it's possible to do so at all. If it's not possible, return −1 instead.
+'''
+from typing import List
+# Write any import statements here
+def findStart(R, C, G):
+  for row in range(R):
+    for col in range(C):
+      if(G[row][col] == 'S'): return (row, col)
+  return (-1, -1)
+# True when it is not passed before
+def isNotPassed(history, pos):
+  for his in history:
+    if(his[0] == pos[0] and his[1] == pos[1]):
+      return False
+  return True
+# look for portals other than itself or any one passed before
+def lookForOtherPortals(G, cur_pos, history):
+  l_portals = []
+  name_p = G[cur_pos[0]][cur_pos[1]]
+  for row in range(R):
+    for col in range(C):
+      if(G[row][col] == name_p): 
+        if(isNotPassed(history, [row, col])):  # not used before
+          if(row == cur_pos[0] and col == cur_pos[1]): # not itself
+            pass
+          else:
+            l_portals.append([row, col])
+  
+  return l_portals
+
+def findExit(R, C, G, history, min_second, n_portal):
+  cur_pos = history[-1]
+  if(G[cur_pos[0]][cur_pos[1]] == 'E'):
+    min_second = min(min_second, len(history) - 1)
+    # print(2, min_second, history)
+    return min_second
+  
+  min_por = float('inf')            
+  if(cur_pos[0] >= 1):  # move to the up
+    next_pos = [cur_pos[0] - 1,  cur_pos[1]]
+    if(G[next_pos[0]][next_pos[1]] != '#' and isNotPassed(history, next_pos)):
+      history.append(next_pos)
+      ret = findExit(R, C, G, history, min_second, n_portal)
+      history.pop()
+      if(ret >= 0):
+        min_por = min(min_por, ret)
+  if(cur_pos[0] < R-1):  # move to the down
+    next_pos = [cur_pos[0] + 1,  cur_pos[1]]
+    if(G[next_pos[0]][next_pos[1]] != '#' and isNotPassed(history, next_pos)):
+      history.append(next_pos)
+      ret = findExit(R, C, G, history, min_second, n_portal)
+      history.pop()
+      if(ret >= 0):
+        min_por = min(min_por, ret)
+  if(cur_pos[1] >= 1):  # move to the left
+    #print(6, 'move to the left', cur_pos)
+    next_pos = [cur_pos[0],  cur_pos[1] - 1]
+    if(G[next_pos[0]][next_pos[1]] != '#' and isNotPassed(history, next_pos)):
+      history.append(next_pos)
+      ret = findExit(R, C, G, history, min_second, n_portal)
+      history.pop()
+      if(ret >= 0):
+        min_por = min(min_por, ret)
+  if(cur_pos[1] < C-1):  # move to the right
+    # print(7, cur_pos, 'move to the right')
+    next_pos = [cur_pos[0],  cur_pos[1] + 1]
+    if(G[next_pos[0]][next_pos[1]] != '#' and isNotPassed(history, next_pos)):
+      history.append(next_pos)
+      ret = findExit(R, C, G, history, min_second, n_portal)
+      history.pop()
+      if(ret >= 0):
+        min_por = min(min_por, ret)
+  
+  if(G[cur_pos[0]][cur_pos[1]] >= 'a' and G[cur_pos[0]][cur_pos[1]] <= 'z'):
+    l_portals = lookForOtherPortals(G, cur_pos, history)
+    # print(3, cur_pos, l_portals)
+    bk_history = history[:]  # hardcopy
+    
+    for portal in l_portals:
+      #history = bk_history[:] + [portal]
+      #print(8, history)
+      history.append(portal)
+      ret = findExit(R, C, G, history, min_second, n_portal+1)
+      history.pop()
+      if(ret >= 0):
+        min_por = min(min_por, ret)
+  if(min_por != float('inf')):
+      return min_por
+  return -1
+              
+def getSecondsRequired(R: int, C: int, G: List[List[str]]) -> int:
+  # Write your code here
+  # iterative algorithm
+  # find the start
+  start_r, start_c = findStart(R, C, G)
+  history = [[start_r, start_c]]
+  min_second = float('inf')
+  n_portal = 0
+  # go through any cell, untial reach E
+  min_second = findExit(R, C, G, history, min_second, n_portal)
+  return min_second
