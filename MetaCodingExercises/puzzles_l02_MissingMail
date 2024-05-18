@@ -1,0 +1,33 @@
+'''
+You are the manager of a mail room which is frequently subject to theft. A period of N days is about to occur, such that on the ith day, the following sequence of events will occur in order:
+1. A package with a value of Vi dollars will get delivered to the mail room (unless Vi=0, in which case no package will get delivered).
+2. You can choose to pay C dollars to enter the mail room and collect all of the packages there (removing them from the room), and then leave the room
+3. With probability S, all packages currently in the mail room will get stolen (and therefore removed from the room).
+Note that you're aware of the delivery schedule V (1..N), but can only observe the state of the mail room when you choose to enter it, meaning that you won't immediately be aware of whether or not packages were stolen at the end of any given day.
+Your profit after the Nth day will be equal to the total value of all packages which you collected up to that point, minus the total amount of money you spent on entering the mail room.
+Please determine the maximum expected profit you can achieve (in dollars).
+'''
+def getMaxExpectedProfit(N: int, V: List[int], C: int, S: float) -> float:
+  # Write your code here
+  l_profits = []
+  l_profits.append([V[0] - C, 0])   # enter and take
+  l_profits.append([0, V[0]])       # left in the room
+  
+  for i in range(1, N):
+    # print(1, l_profits)
+    cur_len = len(l_profits)
+    for j in range(cur_len):
+      a_pro = l_profits[j]
+      # enter and take, the left becomes zero
+      taken = V[i] - C + a_pro[1]*(1-S)
+      if(taken > 0):
+        b_pro = [a_pro[0] + taken, 0]
+        l_profits.append(b_pro)
+    for j in range(cur_len):
+      c_pro = l_profits[j]
+      # left in the room
+      c_pro[1] = c_pro[1]*(1-S) + V[i]
+  max_profit = 0
+  for e_pro in l_profits:
+    max_profit = max(max_profit, e_pro[0])
+  return max_profit
