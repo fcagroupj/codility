@@ -1,0 +1,60 @@
+'''
+https://www.metacareers.com/profile/coding_puzzles?puzzle=977526253003069
+
+A family of frogs in a pond are traveling towards dry land to hibernate. They hope to do so by hopping across a trail of N lily pads, numbered from 1 to N in order.
+There are F frogs, numbered from 1 to F. Frog i is currently perched atop lily pad Pi. No two frogs are currently on the same lily pad. Lily pad N is right next to the shore, and none of the frogs are initially on lily pad N.
+Each second, one frog may hop along the trail towards lily pad N. When a frog hops, it moves to the nearest lily pad after its current lily pad which is not currently occupied by another frog (hopping over any other frogs on intermediate lily pads along the way). If this causes it to reach lily pad N, it will immediately exit onto the shore. Multiple frogs may not simultaneously hop during the same second.
+Assuming the frogs work together optimally when deciding which frog should hop during each second, determine the minimum number of seconds required for all F of them to reach the shore.
+
+'''
+from typing import List
+# Write any import statements here
+
+def getSecondsRequired(N: int, F: int, P: List[int]) -> int:
+  # Write your code here
+  P.sort()  # Sort the initial positions of the frogs
+  seconds = 0  # To count the number of seconds
+  occupied = set(P)  # To keep track of occupied lily pads
+
+  for i in range(F):
+      while P[i] < N:
+          # Find the next unoccupied lily pad
+          next_pos = P[i] + 1
+          while next_pos in occupied:
+              next_pos += 1
+          occupied.remove(P[i])  # Current lily pad is no longer occupied
+          P[i] = next_pos  # Move the frog to the next unoccupied lily pad
+          occupied.add(next_pos)  # Mark the new lily pad as occupied
+          seconds += 1
+          if P[i] == N:
+              occupied.remove(N)  # The frog has reached the shore
+              break  # Move to the next frog
+
+  return seconds
+#####################################################################
+# another solution
+#
+def getSecondsRequired(N: int, F: int, P: List[int]) -> int:
+  # create a lily list ocupied by frogs
+  lily_list = [0] * N
+  # put the positions of frogs in the lily list
+  for p in P:
+    lily_list[p-1] = 1
+  n_hops = 0
+  # print(1, 0, 0, n_hops, lily_list)
+  # check the lily list
+  for i in range(N-1):
+    if(lily_list[i] > 0):
+      j = i + 1
+      while(j < N-1 and lily_list[j] > 0):
+        j += 1
+      lily_list[i] = 0
+      lily_list[j] = 1
+      n_hops += 1
+      if(j == N-1):
+              lily_list[j] = 0
+      
+      # print(3, i, j, n_hops, lily_list)
+    
+  # the frog hopes the way forward until the position of next frog
+  return n_hops
