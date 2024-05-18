@@ -9,25 +9,63 @@ Please determine the maximum expected profit you can achieve (in dollars).
 '''
 def getMaxExpectedProfit(N: int, V: List[int], C: int, S: float) -> float:
   # Write your code here
-  l_profits = []
-  l_profits.append([V[0] - C, 0])   # enter and take
+  l_profits = [] # have member of [profit, left], only store the possibility with left 
+  #l_profits.append([V[0] - C, 0])   # no enter and take
   l_profits.append([0, V[0]])       # left in the room
+  taken_profit = V[0] - C   # maximum profit without left
   
   for i in range(1, N):
-    # print(1, l_profits)
+    # print(1, l_profits, taken_profit)
     cur_len = len(l_profits)
+    # update the taken profit without any left
+    l_profits.append([taken_profit, V[i]])  # add a new possibility
+    taken_profit = max(taken_profit, taken_profit +  V[i] - C)
+    # a case we take all and update the taken_profit
     for j in range(cur_len):
       a_pro = l_profits[j]
       # enter and take, the left becomes zero
       taken = V[i] - C + a_pro[1]*(1-S)
       if(taken > 0):
-        b_pro = [a_pro[0] + taken, 0]
-        l_profits.append(b_pro)
+        taken_profit = max(taken_profit, a_pro[0] + taken)
+    # a case ehen just add to the left
     for j in range(cur_len):
       c_pro = l_profits[j]
       # left in the room
       c_pro[1] = c_pro[1]*(1-S) + V[i]
+    
+  # print(2, l_profits, taken_profit)
   max_profit = 0
   for e_pro in l_profits:
     max_profit = max(max_profit, e_pro[0])
+  max_profit = max(max_profit, taken_profit)
   return max_profit
+###############################################33333
+# the below is not working, but for reference
+def getMaxExpectedProfit(N: int, V: List[int], C: int, S: float) -> float:
+    # Write your code here
+    # dp[i] will store the maximum expected profit starting from day i
+    # Initialize dp array where dp[i] is the max expected profit from day i to N
+    dp = [0] * (N + 1)
+    
+    # Iterate from the last day to the first day
+    for i in range(N - 1, -1, -1):
+        sum_V = 0
+        max_profit = float('-inf')
+        
+        # Consider all possible days to collect packages starting from day i
+        for j in range(i, N):
+            sum_V += V[j]
+            # If we collect packages on day j
+            if j + 1 <= N:
+                collect_profit = sum_V - C + dp[j + 1]
+            else:
+                collect_profit = sum_V - C
+            # If we don't collect packages, consider the risk of theft
+            no_collect_profit = (1 - S) * dp[j + 1]
+            
+            # Calculate the maximum expected profit for collecting or not collecting
+            max_profit = max(max_profit, collect_profit, no_collect_profit)
+        
+        dp[i] = max_profit
+    
+    return dp[0]
