@@ -10,6 +10,61 @@ Walk to a cell adjacent to your current one (directly above, below, to the left,
 If your current cell contains a portal, teleport to any other cell in the grid containing a portal marked with the same letter as your current cell's portal.
 Determine the minimum number of seconds required to reach any exit, if it's possible to do so at all. If it's not possible, return −1 instead.
 '''
+from collections import deque, defaultdict              
+def getSecondsRequired(R: int, C: int, G: List[List[str]]) -> int:
+    # Write your code here
+    start = None
+    exits = []
+    portals = defaultdict(list)
+    
+    # Parse the grid to find start, exits, and portals
+    for r in range(R):
+        for c in range(C):
+            if G[r][c] == 'S':
+                start = (r, c)
+            elif G[r][c] == 'E':
+                exits.append((r, c))
+            elif 'a' <= G[r][c] <= 'z':
+                portals[G[r][c]].append((r, c))
+    
+    # Direction vectors for moving up, down, left, right
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    
+    # BFS initialization
+    queue = deque([(start[0], start[1], 0)])  # (row, col, steps)
+    visited = set()
+    visited.add(start)
+    
+    while queue:
+        r, c, steps = queue.popleft()
+        
+        # Check if we've reached any exit
+        if (r, c) in exits:
+            return steps
+        
+        # Explore all possible moves
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < R and 0 <= nc < C and (nr, nc) not in visited and G[nr][nc] != '#':
+                visited.add((nr, nc))
+                queue.append((nr, nc, steps + 1))
+        
+        # Explore teleportation if on a portal
+        if 'a' <= G[r][c] <= 'z':
+            portal_char = G[r][c]
+            for pr, pc in portals[portal_char]:
+                if (pr, pc) != (r, c) and (pr, pc) not in visited:
+                    visited.add((pr, pc))
+                    queue.append((pr, pc, steps + 1))
+            
+            # Clear the portals list to prevent redundant teleports
+            portals[portal_char].clear()
+    
+    # If we exhaust the queue without finding an exit, return -1
+    return -1
+###############################################################33
+# below is for reference due to time limits
+#
 from typing import List
 # Write any import statements here
 def findStart(R, C, G):
