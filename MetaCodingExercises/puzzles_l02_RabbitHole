@@ -1,0 +1,29 @@
+'''
+
+'''
+
+def getMaxVisitableWebpages(N: int, L: List[int]) -> int:
+  # Write your code here
+  # brute way is to try each one and calcuate the shortest path
+  # put the number and value into a dict
+  d_web = {}
+  for i, l in enumerate(L):
+    d_web[i + 1] = l
+  # print(1, d_web)
+  max_visits = 0
+  
+  # go through all values in L
+  for i in range(N):      
+    visited = [i + 1]    
+    nxt = L[i]
+    # print(2, i, nxt, visited, n_vists)
+    # if found in dict
+    while(nxt > 0):
+      if(nxt not in visited):
+        visited.append(nxt)
+      else:
+        break  # if it is visited, let's end
+      # jump to next page
+      nxt = d_web.get(nxt, 0)
+    max_visits = max(max_visits, len(visited))
+  return max_visits
