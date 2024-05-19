@@ -1,29 +1,51 @@
 '''
+https://www.metacareers.com/profile/coding_puzzles?puzzle=316794079975021
+You're having a grand old time clicking through the rabbit hole that is your favorite online encyclopedia.
+The encyclopedia consists of N different web pages, numbered from 1 to N. Each page i contains nothing but a single link to a different page Li.
+A session spent on this website involves beginning on one of the N pages, and then navigating around using the links until you decide to stop. That is, while on page i, you may either move to page Li, or stop your browsing session.
+Assuming you can choose which page you begin the session on, what's the maximum number of different pages you can visit in a single session? Note that a page only counts once even if visited multiple times during the session.
 
 '''
-
+#####################################################
+#  some are failed due to time limit
+#
 def getMaxVisitableWebpages(N: int, L: List[int]) -> int:
   # Write your code here
   # brute way is to try each one and calcuate the shortest path
   # put the number and value into a dict
   d_web = {}
+  d_revert = {}
   for i, l in enumerate(L):
     d_web[i + 1] = l
+    d_revert[l] = i + 1
   # print(1, d_web)
-  max_visits = 0
+  set_web = set()
   
-  # go through all values in L
-  for i in range(N):      
-    visited = [i + 1]    
-    nxt = L[i]
-    # print(2, i, nxt, visited, n_vists)
-    # if found in dict
-    while(nxt > 0):
-      if(nxt not in visited):
-        visited.append(nxt)
-      else:
-        break  # if it is visited, let's end
-      # jump to next page
-      nxt = d_web.get(nxt, 0)
-    max_visits = max(max_visits, len(visited))
+  queue_list = []
+  for a in d_web:
+    # 
+    if(a in set_web):
+      continue
+    else:
+        q_web = deque()
+        nxt = a
+        while(nxt > 0):
+          if(nxt not in q_web):
+            q_web.append(nxt)
+            set_web.add(nxt)
+            nxt = d_web.get(nxt, 0)
+          else:
+            break
+        pre = d_revert.get(a, 0)
+        while(pre > 0):
+          if(pre not in q_web):
+            q_web.appendleft(pre)
+            set_web.add(pre)
+            pre = d_revert.get(pre, 0)
+          else:
+            break
+        queue_list.append(q_web)
+  
+  max_visits = getLonghestQueue(queue_list)
+  
   return max_visits
