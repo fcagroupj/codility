@@ -1,0 +1,75 @@
+'''
+You are spectating a programming contest with N competitors, each trying to independently solve the same set of programming problems. Each problem has a point value, which is either 1, 2, or 3.
+On the scoreboard, you observe that the ith competitor has attained a score of Si, which is a positive integer equal to the sum of the point values of all the problems they have solved.
+The scoreboard does not display the number of problems in the contest, nor their point values. Using the information available, you would like to determine the minimum possible number of problems in the contest.
+'''
+
+from typing import List
+# Write any import statements here
+# 
+def getCombinations(s, x, y, z, combinations):
+  n_sum = x * 1 + y * 2 + z * 3
+  if(n_sum > s):
+    return combinations
+  if(n_sum == s):
+    combinations.add( (x, y, z) )
+    return combinations
+  
+  if(s - n_sum >= 1):
+    getCombinations(s, x+1, y, z, combinations)
+  if(s - n_sum >= 2):
+    getCombinations(s, x, y+1, z, combinations)
+  if(s - n_sum >= 3):
+    getCombinations(s, x, y, z+1, combinations)
+  return combinations
+
+def isBigger(comb, set_value):
+  for a_value in set_value:
+    if(comb[0] >= a_value[0] and comb[1] >= a_value[1] and comb[2] >= a_value[2]):
+      
+      return True
+  return False
+def isSmaller(comb, set_value):
+  for a_value in set_value:
+    if(comb[0] <= a_value[0] and comb[1] <= a_value[1] and comb[2] <= a_value[2]):
+      set_value.remove(a_value)
+      return True
+  return False
+
+def   getMinProblems(set_src):
+  min_problems = float('inf')
+  for a_value in set_src:
+    n_pro = a_value[0] + a_value[1] + a_value[2]
+    min_problems = min(min_problems, n_pro)
+  return min_problems
+
+def getMinProblemCount(N: int, S: List[int]) -> int:
+  # Write your code here
+  # sort S and start from the 1st number
+  S.sort()
+  #  each number can be added from (1, 2, 3) with number (x, y, z), there are many combinations
+  set_old = set()
+  set_old.add( (0, 0, 0) )
+  for s in S:
+    combinations = set()
+    x, y, z = 0, 0, 0
+    getCombinations(s, x, y, z, combinations)
+    
+    #  put combination (x, y, z) as key into a set
+    #  check each key, if it's smaller( three value are all smaller), replace it
+    set_new = set()
+    for comb in combinations:
+      for comb_old in set_old:
+        comb_new = (max(comb[0], comb_old[0]), max(comb[1], comb_old[1]), max(comb[2], comb_old[2]))
+        if(isBigger(comb_new, set_new)):  
+          pass
+        elif(isSmaller(comb_new, set_new)):  # remove the old one
+          set_new.add(comb_new)  
+        else:
+          set_new.add(comb_new)
+    # put back
+    set_old = set_new
+    #print(2, s, set_old)
+  # get the samllest combination
+  ret = getMinProblems(set_old)
+  return ret
