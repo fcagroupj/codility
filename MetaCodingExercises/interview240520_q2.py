@@ -3,25 +3,44 @@ Given digitals [123456789], you can insert + or - in any position in order to ge
 for example:
 123+45-67+8-9 = 100
 123-45-67+89  = 100
+123+4-5+67-89
+123-4-5-6-7+8-9
+12+3+4+5-6-7+89
+12+3-4+5+67+8+9
+12-3-4+5-6+7+89
+1+23-4+56+7+8+9
+1+23-4+5+6+78-9
+1+2+34-5+67-8+9
+1+2+3-4+5+6+78+9
+-1+2-3+4+5+6+78+9
 Print all possible ways as example string
-expained as:
-1 [100, 20, 3, 40, 5, -60, -7, 8, -9]
-1 [100, 20, 3, -40, -5, -60, -7, 80, 9]
-1 [100, 20, 3, 4, -5, 60, 7, -80, -9]
-1 [100, 20, 3, -4, -5, -6, -7, 8, -9]
-1 [10, 2, 3, 4, 5, -6, -7, 80, 9]
-1 [10, 2, 3, -4, 5, 60, 7, 8, 9]
-1 [10, 2, -3, -4, 5, -6, 7, 80, 9]
-1 [1, 20, 3, -4, 50, 6, 7, 8, 9]
-1 [1, 20, 3, -4, 5, 6, 70, 8, -9]
-1 [1, 2, 30, 4, -5, 60, 7, -8, 9]
-1 [1, 2, 3, -4, 5, 6, 70, 8, 9]
-1 [-1, 2, -3, 4, 5, 6, 70, 8, 9] 
+
 '''
-def printSumString(l_digi):
-    print(l_digi)
+def getDigitals(n):
+    i = 0
+    while(n  > 0):
+        i += 1
+        n = n // 10
+    return i
+def printSumString(l_digitals):
+    #print(l_digitals)
+    sum_s = ''
+    i = 0
+    while(i < len(l_digitals)):
+        j = getDigitals( abs(l_digitals[i]) )
+        if(j < 1): 
+            i += 1
+            continue
+        sum1 = 0
+        for k in range(j):
+            sum1 += l_digitals[i+k]
+        
+        if(i>0 and sum1 > 0): sum_s += '+'
+        elif(sum1 < 0): sum_s += '-'
+        sum_s += str( abs(sum1) )
+        i += j
+    print(sum_s)
 def getTarget(digits, d_target, target):
-   
     lt = len(d_target)
     if(lt== 9 and sum(d_target) ==  target):
         printSumString(d_target)
@@ -50,10 +69,11 @@ def getTarget(digits, d_target, target):
 
     return 
 
-digits = [i for i in range(1, 10)]
-operation = [10, 1, -1]
-target = 100
-d_target = []
+if __name__ == "__main__":
+    
+    digits = [i for i in range(1, 10)]
+    operation = [10, 1, -1]
+    target = 100
+    d_target = []
 
-getTarget(digits, d_target, target)
-  
+    getTarget(digits, d_target, target)
