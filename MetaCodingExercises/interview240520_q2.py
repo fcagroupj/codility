@@ -16,6 +16,57 @@ for example:
 Print all possible ways as example string
 
 '''
+def getSum(s_in):
+    sum_n = 0
+    sign_n = 1
+    str_d = ''
+    for s in s_in:        
+        if(s == '+'):
+            if(len(str_d) > 0):
+                sum_n += int(str_d) * sign_n
+                str_d = ''
+            sign_n = 1
+        elif(s == '-'):
+            if(len(str_d) > 0):
+                sum_n += int(str_d) * sign_n
+                str_d = ''
+            sign_n = -1
+        else:
+            str_d += s
+    if(len(str_d) > 0):
+        sum_n += int(str_d) * sign_n
+    return sum_n    
+def find_combinations(current, remaining, target_sum):
+    if not remaining:
+        if getSum(current) == target_sum:
+            return [current]
+        return []
+    target_set = []
+    for i in range(1, len(remaining) + 1):
+        num_str = remaining[:i]
+        
+        # Concatenate without an operator
+        ret = find_combinations(current + num_str, remaining[i:], target_sum)
+        for a in ret:
+            if(a not in target_set): target_set.append(a)
+        # Add with +
+        if(current):
+            ret = find_combinations(current + '+' + num_str, remaining[i:], target_sum)
+            for a in ret:
+                if(a not in target_set): target_set.append(a)
+        # Add with -
+        ret = find_combinations(current + '-' + num_str, remaining[i:], target_sum)
+        for a in ret:
+            if(a not in target_set): target_set.append(a)
+    return target_set
+def main():
+    digits = "123456789"
+    target_sum = 100
+    set_target = set()
+    ret1 = find_combinations("", digits, target_sum)
+    print(ret1)
+###############################################################
+# this is a little complicated
 def getDigitals(n):
     i = 0
     while(n  > 0):
