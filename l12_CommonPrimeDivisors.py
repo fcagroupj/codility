@@ -13,6 +13,9 @@ def solution(A, B)
 that, given two non-empty arrays A and B of Z integers, returns the number of positions K for which the prime divisors of A[K] and B[K] are exactly the same.
 
 '''
+##########################################################
+#  https://app.codility.com/demo/results/trainingY2A86J-ZRW/
+#
 def solution(A, B):
     # Implement your solution here
     def gcd(a, b):
