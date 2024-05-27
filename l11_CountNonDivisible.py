@@ -28,6 +28,42 @@ Result array should be returned as an array of integers.
 
 
 '''
+#######################################################################
+# https://app.codility.com/demo/results/training7TEXWR-MKY/
+#
+def getDivs(n):
+    l_div = []
+    i = 1
+    while(i * i < n):
+        if(n % i == 0):
+            l_div += [i, n//i]
+        i += 1
+    if(i * i == n):
+        l_div += [i]
+    return l_div
+def solution(A):
+    # Implement your solution here
+    N = len(A)
+    # put the number and occurances in dict
+    dict_n = {}
+    for a in A:
+        dict_n[a] = dict_n.get(a, 0) + 1
+    # print(1, dict_n)
+    # list the divisors of each number and calculate the occurances
+    dict_div_n = {}
+    for key in dict_n:
+        dict_div_n[key] = 0
+        l_divs = getDivs(key)
+        # print(2, key, l_divs)
+        for div in l_divs:
+            dict_div_n[key] +=  dict_n.get(div, 0)
+    # print(3, dict_div_n)
+    # calculate each element
+    l_non_div = []
+    for a in A:
+        l_non_div.append(N - dict_div_n[a])
+    return l_non_div
+#######################################################################    
 # only process unique numbers saved in B
 # sort B, then the divisors are only in front of the targeting number
 def solution(A):
@@ -54,7 +90,7 @@ def solution(A):
             j += 1      
         mapper[A[i]] = ans[i]
     return ans
-
+#######################################################################
 def solution3(A):
     # Implement your solution here
     N = len(A)
@@ -81,7 +117,8 @@ def solution3(A):
         r_no_div[i] = l_no_div[A[i]]
     #print(3, r_no_div, l_no_div)
     return r_no_div
-############
+#######################################################################
+#
 def solution2(A):
     N = len(A)
     l_no_div = {}
