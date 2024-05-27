@@ -1,5 +1,5 @@
 '''
-https://app.codility.com/demo/results/trainingJJ7HJJ-TFR/
+https://app.codility.com/demo/results/trainingUUEJ73-NSQ/
 A non-empty array A consisting of N integers is given.
 
 A peak is an array element which is larger than its neighbors. More precisely, it is an index P such that 0 < P < N − 1,  A[P − 1] < A[P] and A[P] > A[P + 1].
@@ -47,7 +47,49 @@ that, given a non-empty array A consisting of N integers, returns the maximum nu
 
 If A cannot be divided into some number of blocks, the function should return 0.
 '''
-
+#######################################################
+# https://app.codility.com/demo/results/trainingUUEJ73-NSQ/
+# 
+def getDivs(N):
+    divs = []
+    i = 1
+    while(i * i < N):
+        if(N % i == 0):
+            divs.append(i)
+            divs.append(N // i)
+        i += 1
+    if(i * i == N):
+        divs.append(i)
+    divs.sort(reverse=True)
+    return divs
+def isFlagInEachBlock(N, peaks, K):
+    n_pergroup = N // K     # K groups
+    f_pergroup = [0] * K    # flag in each group
+    for p in peaks:
+        i = p // n_pergroup
+        f_pergroup[i] = 1
+    if(sum(f_pergroup) == K): return True
+    return False
+def solution(A):
+    # Implement your solution here
+    N = len(A)
+    peaks = []
+    for i in range(1, N-1):
+        if(A[i-1] < A[i] and A[i] > A[i+1]):
+            peaks.append(i)
+    if(len(peaks) < 1): return 0
+    
+    l_div = getDivs(N)
+    
+    for div in l_div:
+        if(div <= len(peaks)):
+            if(isFlagInEachBlock(N, peaks, div) ):
+                return div
+    return 0
+##################################################################
+# is not bad
+#   https://app.codility.com/demo/results/trainingJJ7HJJ-TFR/
+#
 def hasPeak(i_block, len_block, peaks):
     
     for k in range(i_block*len_block, i_block*len_block+len_block):
