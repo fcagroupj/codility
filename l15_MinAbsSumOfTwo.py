@@ -12,6 +12,27 @@ def solution(A)
 
 that, given a non-empty array A consisting of N integers, returns the minimal abs sum of two for any pair of indices in this array.
 '''
+########################################################################################
+# 
+def solution(A):
+    # Implement your solution here
+    N = len(A)
+    A.sort()
+    i_l, i_r = 0, N-1
+    min_pair = float('inf')
+    while(i_l <= i_r):
+        pair = A[i_l] + A[i_r]
+        if(pair == 0): return 0
+        elif(pair < 0):
+            i_l += 1
+            min_pair = min(min_pair, abs(pair))
+        else:
+            i_r -= 1
+            min_pair = min(min_pair, abs(pair))
+    # print(1, min_pair, i_l, i_r)
+    return min_pair
+########################################################################################
+# 
 def solution(A):
     # Implement your solution here
     N = len(A)
