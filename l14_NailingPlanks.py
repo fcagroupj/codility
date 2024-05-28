@@ -27,12 +27,12 @@ def can_nail_all_planks(A, B, C, max_nails):
     
     for i in range(max_nails):
         max_pos[C[i]] = 1
-    print(1, max_pos)
+    # print(1, max_pos)
     # Accumulate the prefix max to check 
     # if any nail is available in the range
     for i in range(1, len(max_pos)):
         max_pos[i] += max_pos[i - 1]
-    print(2, max_pos)
+    # print(2, max_pos)
     # Check each plank
     for i in range(len(A)):
         if max_pos[B[i]] - max_pos[A[i] - 1] == 0:
