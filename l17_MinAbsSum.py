@@ -45,41 +45,29 @@ def solution(A):
     return result
 #########################################
 # as a reference
-# https://app.codility.com/demo/results/trainingM79TKG-NV8/
-# [27% passed]
+# https://app.codility.com/demo/results/trainingZZ5JDC-FS6/
+# [72% passed]
 #
 def solution(A):
     # Implement your solution here
-    N = len(A) 
+    N = len(A)  
     if(N < 1): return 0
-    B = [abs(i) for i in A]
-    B.sort()
-    
-    target = sum(B) / 2
-    # print (B, target)
-    min2half = target
-    dp = [float('inf')] * (N + 1)
-    dp[0] = B[0]
-    #
-    for j in range(1, N):
-        
-        for i in range(1, N):
-            prev = j - i
-            if(prev >= 0):
-                dp_new = dp[prev] + B[j]
-                if(abs(dp_new - target) < abs(dp[j] - target)):
-                    dp[j] = dp_new
-                min2half = min(min2half, abs(dp[j] - target))
-                if(min2half == 0): return 0
-                # print(2, j, i, prev, dp_new, dp)
-                if(j == N - 1):
-                    dp_new = abs(dp[prev] - B[j])
-                    if(abs(dp_new - target) < abs(dp[j] - target)):
-                        dp[j] = dp_new
-                    min2half = min(min2half, dp[j] / 2)
-                    
-                    # print(3, j, i, prev, dp_new, dp)
-                #
-            #print(1, j, i, prev, dp)
-        #
-    return int(min2half * 2)
+    # k = 2
+    # dp = [ [] for i in range(N+1)]
+    set_dp = set()
+    set_dp.add(A[0])
+    set_dp.add(-A[0])
+    # dp[0] = [A[0], -A[0]]
+    for j in range (1, N):
+        new_dp = set()
+        for a in set_dp:
+            new_dp.add(a + A[j])
+            new_dp.add(a - A[j])
+        set_dp = new_dp
+        # print(1, j, set_dp)
+
+    min_val = float('inf')
+    for a in set_dp:
+        min_val = min(min_val, abs(a))
+    return min_val
+
