@@ -70,4 +70,21 @@ def solution(A):
     for a in set_dp:
         min_val = min(min_val, abs(a))
     return min_val
+#########################################
+# as a reference
+# https://app.codility.com/demo/results/trainingGYUGQ5-2U5/
+# [54% passed]
+#
+def getMinSum(target, source, min_sum):
+    if(len(source) < 1):
+        min_sum = min(min_sum, abs(target))
+        return min_sum
+    value = source[0]
+    ret1 = getMinSum(target + value, source[1:], min_sum)
+    ret2 = getMinSum(target - value, source[1:], min_sum)
 
+    return min(ret1, ret2)
+def solution(A):
+    # Implement your solution here
+    ret = getMinSum(0, A, float('inf'))
+    return ret
