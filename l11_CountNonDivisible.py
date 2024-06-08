@@ -29,6 +29,11 @@ Result array should be returned as an array of integers.
 
 '''
 #######################################################################
+#  https://app.codility.com/demo/results/trainingFT4G26-AGS/
+#
+
+
+#######################################################################
 # https://app.codility.com/demo/results/training7TEXWR-MKY/
 #
 def getDivs(n):
