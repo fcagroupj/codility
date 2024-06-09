@@ -1,5 +1,4 @@
 '''
-https://app.codility.com/demo/results/training3W2PPD-553/
 You are given an array A consisting of N integers.
 
 For each number A[i] such that 0 ≤ i < N, we want to count the number of elements of the array that are not the divisors of A[i]. We say that these elements are non-divisors.
@@ -29,9 +28,66 @@ Result array should be returned as an array of integers.
 
 '''
 #######################################################################
-#  https://app.codility.com/demo/results/trainingHQJYCN-RBY/
-#
+#  https://app.codility.com/demo/results/trainingFWWJG2-UQQ/
+#    [55%]
+# print("this is a debug message")
+def getCount(A):
+    dict_a = {}
+    for a in A:
+        dict_a[a] = dict_a.get(a, 0) + 1
+    return dict_a
+def getSieve(n):
+    sieves = [0] * (n + 1)
+    for i in range(2, n + 1):
+        if sieves[i] == 0:  # i is a prime number
+            for k in range(i * i, n + 1, i):
+                if sieves[k] == 0:
+                    sieves[k] = i
+    return sieves
+    
+def getDivs(d, sieves):
+    divs = [1, d]
+    min_div = sieves[d]
+    if(min_div > 0): 
+        divs.append(min_div)
+    while min_div > 0:
+        left = d // min_div
+        divs.append(left)
+        min_div = sieves[left]
+        d = left
+    return list(set(divs))
+def getDivCount(d, dict_a, dict_divs):
+    divs = dict_divs[d]
+    n_div = 0
+    for div in divs:
+        n_div += dict_a.get(div, 0)
+    return n_div
+def solution(A):
+    # Implement your solution here
+    N = len(A)
+    # get count of element
+    dict_a = getCount(A)
+    # print(1, dict_a)
+    # get max element
+    max_e = max(A)
+    # print(2, max_e)
+    # get Sieve of the max
+    l_sieve = getSieve(max_e)
+    # print(3, l_sieve)
+    # get divisors of each element
+    
+    dict_divs = {}
+    for d in dict_a:
+        divs = getDivs(d, l_sieve)
+        # print(4, d, divs)
+        dict_divs[d] = divs
+    # print(5, dict_divs)    
+    # compare with others
+    non_divisors = [0] * N
+    for i in range(N):
+        non_divisors[i] = N - getDivCount(A[i], dict_a, dict_divs) 
 
+    return non_divisors
 
 #######################################################################
 # https://app.codility.com/demo/results/training7TEXWR-MKY/
