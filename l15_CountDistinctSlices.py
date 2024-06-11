@@ -1,5 +1,5 @@
 '''
-https://app.codility.com/demo/results/training6534C4-RPP/
+https://app.codility.com/demo/results/trainingMK6HZ8-64W/
 [100% passed]
 An integer M and a non-empty array A consisting of N non-negative integers are given. All integers in array A are less than or equal to M.
 
@@ -21,15 +21,15 @@ def solution(M, A):
     # Implement your solution here
     seen = set()
     count = 0
-    start = 0
+    back = 0  # tail of caterpillar
 
-    for i in range(len(A)):
+    for front in range(len(A)):
         #print(i, start, count)
-        while A[i] in seen:
-            seen.remove(A[start])
-            start += 1
-        seen.add(A[i])
-        count += (i - start + 1)
+        while A[front] in seen:
+            seen.remove(A[back])
+            back += 1
+        seen.add(A[front])
+        count += (front - back + 1)
 
         if count > 1000000000:
             return 1000000000
