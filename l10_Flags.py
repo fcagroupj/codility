@@ -39,7 +39,7 @@ that, given a non-empty array A of N integers, returns the maximum number of fla
 '''
 ########################################
 #     https://app.codility.com/demo/results/training7QVUKY-634/
-#    84%
+#     84%
 def getMaxFlags(n):
     if(n == 1): return 1
     i = 1
@@ -85,7 +85,7 @@ def solution(A):
 
 ########################################
 #     https://app.codility.com/demo/results/trainingFQJ22V-A48/
-#
+#     73%
 def solution(A):
     # Implement your solution here
     N = len(A)
