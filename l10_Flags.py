@@ -1,5 +1,5 @@
 '''
-https://app.codility.com/demo/results/trainingFQJ22V-A48/
+
 A non-empty array A consisting of N integers is given.
 
 A peak is an array element which is larger than its neighbours. More precisely, it is an index P such that 0 < P < N − 1 and A[P − 1] < A[P] > A[P + 1].
@@ -37,6 +37,55 @@ def solution(A)
 
 that, given a non-empty array A of N integers, returns the maximum number of flags that can be set on the peaks of the array.
 '''
+########################################
+#     https://app.codility.com/demo/results/training7QVUKY-634/
+#    84%
+def getMaxFlags(n):
+    if(n == 1): return 1
+    i = 1
+    while(i * (i - 1) < n):
+        i += 1
+    if(i * (i - 1) == n):
+        return i
+    return i
+def peaksValid(A, peaks, flags):
+    min_dist = flags
+    
+    flag_used = 1
+    peak_last = peaks[0]
+    #print(2, flags, peaks)
+    for i in range(1, len(peaks)):
+        if(peaks[i] - peak_last >= min_dist):
+            peak_last = peaks[i]
+            flag_used += 1
+            if(flag_used >= flags): 
+                break
+    #print(3, flag_used, peak_last)
+    return flag_used
+def solution(A):
+    # Implement your solution here
+    N = len(A)
+    # get peaks, total number is Np
+    peaks = []
+    for i in range(1, N-1):
+        if(A[i-1] < A[i] and A[i] > A[i+1]):
+            peaks.append(i)
+    Np = len(peaks)
+    if(Np < 1): return Np
+    # the max flags are chosen
+    m_flags_from_A = getMaxFlags(N)
+    m_flags = min(Np, m_flags_from_A)
+    #print(1, m_flags, Np, m_flags_from_A)
+    # suppose to have i flags or less, check if the peaks are existing at the i distance or less
+    max_flags = 1
+    for i in range(m_flags, 0, -1):
+        flag_valid = peaksValid(A, peaks, i)
+        max_flags = max(max_flags, flag_valid)
+    return max_flags
+
+########################################
+#     https://app.codility.com/demo/results/trainingFQJ22V-A48/
+#
 def solution(A):
     # Implement your solution here
     N = len(A)
